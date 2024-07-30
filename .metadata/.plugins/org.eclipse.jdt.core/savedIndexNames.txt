@@ -1,0 +1,5 @@
+INDEX VERSION 1.132+C:\Users\Giorgio\Documents\eclipse-workspace\JFrameTesting\.metadata\.plugins\org.eclipse.jdt.core
+4242768837.index
+1865797976.index
+1163734067.index
+375650254.index

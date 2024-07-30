@@ -1,0 +1,112 @@
+@startuml
+
+package controller {
+    class TareaController {
+        - tareaService: TareaService
+        + getAllTareas(): List<Tarea>
+        + createTarea(t: Tarea): void
+        + deleteTarea(t: Tarea): void
+        + updateTarea(t: Tarea): void
+        + updateTareaRapida(t: Tarea): void
+    }
+}
+
+package service {
+    class TareaService {
+        - tareaDAO: TareaDAO
+        + getAllTarea(): List<Tarea>
+        + createTarea(t: Tarea): void
+        + deleteTarea(t: Tarea): void
+        + updateTarea(t: Tarea): void
+        + updateTareaRapida(t: Tarea): void
+    }
+    
+    interface TareaInterfaceService {
+        + getAllTarea(): List<Tarea>
+        + createTarea(t: Tarea): void
+        + deleteTarea(t: Tarea): void
+        + updateTarea(t: Tarea): void
+        + updateTareaRapida(t: Tarea): void
+    }
+}
+
+package db {
+    class Conexion {
+        - instance: Conexion
+        - connection: Connection
+        + getInstance(): Connection
+    }
+    
+    class TareaDAO {
+        - conn: Connection
+        - stmt: PreparedStatement
+        - rs: ResultSet
+        + findAll(): List<Tarea>
+        + crearTarea(t: Tarea): void
+        + borrarTarea(t: Tarea): void
+        + updateTarea(t: Tarea): void
+    }
+    
+    interface TareaInterfaceDAO {
+        + findAll(): List<Tarea>
+        + crearTarea(t: Tarea): void
+        + borrarTarea(t: Tarea): void
+        + updateTarea(t: Tarea): void
+        + updateTareaRapida(t: Tarea): void
+    }
+}
+
+package model {
+    class Tarea {
+        - id: String
+        - nombre: String
+        - descripcion: String
+        - tipoTarea: TipoTarea
+        - estado: boolean
+        - fechaCreacion: Timestamp
+        - fechaActualizacion: Timestamp
+        
+        + toString(): String
+    }
+    
+    enum TipoTarea {
+        RECORDATORIO("R")
+        VENCIMIENTO("V")
+        - code: String
+        + getCode(): String
+    }
+}
+
+package utils {
+    class TareaControllerSingleton {
+        - instance: TareaControllerSingleton
+        - tareaController: TareaController
+        + getInstance(): TareaControllerSingleton
+        + getTareaController(): TareaController
+    }
+    
+    class ButtonHoverEffect {
+        - instance: ButtonHoverEffect
+        + getInstance(): ButtonHoverEffect
+        + applyHoverEffect(boton: JButton): void
+    }
+    
+    class IdGenerator {
+        + generateUUID(): String
+    }
+}
+
+' Relaciones
+TareaController --> TareaService
+TareaService --> TareaDAO
+TareaDAO .left.|> TareaInterfaceDAO
+TareaService .left.|> TareaInterfaceService
+TareaDAO -right-> Tarea
+Conexion -up-> TareaDAO
+ButtonHoverEffect -right-|> Singleton
+IdGenerator ..> Tarea
+TareaControllerSingleton .down.> TareaController
+
+Tarea -down-> TipoTarea
+
+@enduml
